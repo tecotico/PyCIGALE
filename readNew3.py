@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import ctypes
 import os
@@ -13,7 +13,7 @@ from struct import *
 
 import numpy as np
 
-from pyds9 import *
+#from pyds9 import *
 from astropy.io import fits
 
 #------------------------------

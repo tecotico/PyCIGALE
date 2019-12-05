@@ -74,13 +74,13 @@ tipo = result_list[0][0]
 dimx = int(result_list[0][1])
 dimy = int(result_list[0][2])
 ncan = int(result_list[0][3])
-print tipo
-print dimx
-print dimy
-print ncan
+print(tipo)
+print(dimx)
+print(dimy)
+print(ncan)
 
 nv = dimx * dimy * ncan
-print 'nv: ', str(nv)
+print('nv: ', str(nv))
 
 #--------------------------------------------
 

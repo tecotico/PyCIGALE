@@ -102,9 +102,9 @@ img.shape = (ncan, dimy, dimx)
 # se guarda en fits
 hdu = fits.PrimaryHDU(img)
 #utopia
-hdu.writeto('cie2.fits', clobber=True)
+#hdu.writeto('cie2.fits', clobber=True)
 #tortuga
-#hdu.writeto(outputfile, overwrite=True)
+hdu.writeto(outputfile, overwrite=True)
 
 
 

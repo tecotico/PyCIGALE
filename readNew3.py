@@ -22,7 +22,7 @@ HDRLEN = 256
 #------------------------------
 
 def usage():
-    print 'readNew.py -i <inputfile> -o <outputfile>'
+    print('readNew.py -i <inputfile> -o <outputfile>')
     
 #------------------------------
 

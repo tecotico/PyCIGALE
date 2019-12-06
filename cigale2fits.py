@@ -3,10 +3,10 @@
 import ctypes
 import os
 import sys
-import getopt
 import binascii
 import base64
 import time
+import argparse
 
 from collections import namedtuple
 from struct import *
@@ -36,32 +36,26 @@ def myunpack(f, it, nv):
 _unpack = ctypes.CDLL('./libcigaleLAMB.so')
 _unpack.unpack_new.argtypes = (ctypes.c_int, ctypes.POINTER(ctypes.c_int), ctypes.c_int)
 
-try:
-    options, args = getopt.getopt(sys.argv[1:], 'i:o:d', ['inputfile=', 'outputfile='])
-    if not options:
-        usage()
-        sys.exit()
-except getopt.GetoptError:
-    usage()
-    sys.exit()
+parser = argparse.ArgumentParser()
 
-for opt, arg in options:
-    if opt in ('-i', '--inputfile'):
-        inputfile = arg
-    elif opt in ('-o', '--outputfile'):
-        outputfile = arg
-    else:
-        usage()
-        sys.exit()
+parser.add_argument('-i', '--inputfile', dest='ifile')
+parser.add_argument('-o', '--outputfile', dest='ofile')
+
+p = parser.parse_args()
+
+if p.ifile == None or p.ofile == None:
+    usage()
+    sys.exit(0) 
 
 #------------------------------
 #formato encabezado new de cigale
 record_format = '3s5s5s5s238s'
 record_size = calcsize(record_format)
+print('record_size', record_size)
 result_list = []
 
 # lectura del archivo
-f = open(inputfile, "rb")
+f = open(p.ifile, "rb")
 record = f.read(record_size)
 
 result_list.append(unpack(record_format, record))
@@ -69,10 +63,10 @@ tipo = result_list[0][0]
 dimx = int(result_list[0][1])
 dimy = int(result_list[0][2])
 ncan = int(result_list[0][3])
-#print tipo
-#print dimx
-#print dimy
-#print ncan
+print(tipo)
+print(dimx)
+print(dimy)
+print(ncan)
 
 nv = dimx * dimy * ncan
 #print 'nv: ', str(nv)
@@ -93,13 +87,14 @@ _unpack.unpack_new(f.fileno(), ctypes.cast(pointer, ctypes.POINTER(ctypes.c_int)
 f.close
 
 img.shape = (ncan, dimy, dimx)
+print('shape', img.shape)
 
 # se guarda en fits
 hdu = fits.PrimaryHDU(img)
 # python 2.7
-hdu.writeto(outputfile, clobber=True)
+#hdu.writeto(.ofile, clobber=True)
 # 
-#hdu.writeto(outputfile, overwrite=True)
+hdu.writeto(p.ofile, overwrite=True)
 
 
 
